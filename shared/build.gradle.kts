@@ -25,20 +25,15 @@ kotlin {
         }
     }
 
-    // Dependencies versions
-    val coroutineVersion = "1.7.3"
-    val ktorVersion = "2.2.1"
-    val koinVersion = "3.3.2"
-
     sourceSets {
         commonMain.dependencies {
             //put your multiplatform dependencies here
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-            implementation("io.ktor:ktor-client-core:$ktorVersion")
-            implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
 
-            api("io.insert-koin:koin-core:$koinVersion")
+            api(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
