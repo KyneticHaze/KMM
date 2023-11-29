@@ -1,7 +1,7 @@
 package com.example.movie_kmm.di
 
-import com.example.movie_kmm.data.remote.MovieService
-import com.example.movie_kmm.data.remote.RemoteDataSource
+import com.example.movie_kmm.data.remote.service.MovieService
+import com.example.movie_kmm.data.data_source.RemoteDataSource
 import com.example.movie_kmm.data.repository.MovieRepositoryImpl
 import com.example.movie_kmm.domain.repository.MovieRepository
 import com.example.movie_kmm.domain.use_case.GetMovieByIdUseCase
