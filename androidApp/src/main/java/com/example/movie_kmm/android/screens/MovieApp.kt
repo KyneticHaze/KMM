@@ -28,7 +28,7 @@ fun MovieApp() {
     Scaffold(
         topBar = {
             MovieAppBar(
-                canNavigateBack = navController.currentBackStackEntry != null,
+                canNavigateBack = navController.previousBackStackEntry != null,
                 currentScreen = currentScreen
             ) {
                 navController.navigateUp()
