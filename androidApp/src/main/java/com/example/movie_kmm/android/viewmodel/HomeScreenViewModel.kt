@@ -13,7 +13,6 @@ class HomeScreenViewModel(
 ) : ViewModel() {
 
     var uiState by mutableStateOf(HomeScreenState())
-    private var currentPage = 1
 
     init {
         loadMovies(false)
@@ -26,10 +25,10 @@ class HomeScreenViewModel(
         }
 
         if (forceReload) {
-            currentPage = 1
+            uiState.moviePageList.page = 1
         }
 
-        if (currentPage == 1) {
+        if (uiState.moviePageList.page == 1) {
             uiState = uiState.copy(
                 refreshing = true
             )
@@ -41,15 +40,15 @@ class HomeScreenViewModel(
             )
 
             try {
-                val resultMovies = getMoviesUseCase(page = currentPage)
+                val resultMovies = getMoviesUseCase(uiState.moviePageList.page)
 
-                val movies = if (currentPage == 1) resultMovies else uiState.movies + resultMovies
-                currentPage += 1
+                val movies = if (uiState.moviePageList.page == 1) resultMovies else uiState.moviePageList
+                uiState.moviePageList.page += 1
                 uiState = uiState.copy(
                     isLoading = false,
                     refreshing = false,
-                    loadFinished = resultMovies.isEmpty(),
-                    movies = movies
+                    loadFinished = resultMovies.movies.isEmpty(),
+                    moviePageList = movies
                 )
 
             } catch (e: Throwable) {
