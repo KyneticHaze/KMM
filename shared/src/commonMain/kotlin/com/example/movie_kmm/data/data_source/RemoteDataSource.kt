@@ -1,5 +1,6 @@
-package com.example.movie_kmm.data.remote
+package com.example.movie_kmm.data.data_source
 
+import com.example.movie_kmm.data.remote.service.MovieService
 import com.example.movie_kmm.util.Dispatcher
 import kotlinx.coroutines.withContext
 
@@ -12,6 +13,6 @@ internal class RemoteDataSource(
     }
 
     suspend fun getMovieById(id: Int) = withContext(dispatcher.io) {
-        apiService.getMovie(id)
+        apiService.getMovieById(id)
     }
 }
