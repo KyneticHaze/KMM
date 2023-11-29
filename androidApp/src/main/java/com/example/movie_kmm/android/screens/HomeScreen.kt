@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -23,7 +24,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.movie_kmm.android.components.MovieCard
 import com.example.movie_kmm.android.util.HomeScreenState
 import com.example.movie_kmm.domain.model.Movie
@@ -54,18 +57,20 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            itemsIndexed(uiState.movies, key = { _, movie -> movie.id }) { movieIndex, movie ->
+            itemsIndexed(
+                uiState.moviePageList.movies,
+                key = { _, movie -> movie.id }) { movieIndex, movie ->
                 MovieCard(movie = movie) {
                     navigateToDetail(movie)
                 }
 
-                if (movieIndex >= uiState.movies.size - 1 && !uiState.isLoading && !uiState.loadFinished) {
+                if (movieIndex >= uiState.moviePageList.movies.size - 1 && !uiState.isLoading && !uiState.loadFinished) {
                     LaunchedEffect(key1 = Unit, block = {
                         loadNextMovies(false)
                     })
                 }
             }
-            if (uiState.isLoading && uiState.movies.isNotEmpty()) {
+            if (uiState.isLoading && uiState.moviePageList.movies.isNotEmpty()) {
                 item(span = { GridItemSpan(2) }) {
                     Row(
                         modifier = Modifier
@@ -84,5 +89,14 @@ fun HomeScreen(
                 Alignment.TopCenter
             )
         )
+
+        if (uiState.moviePageList.movies.isEmpty()) {
+            Text(
+                text = uiState.errorMessage,
+                style = MaterialTheme.typography.h4,
+                color = MaterialTheme.colors.error,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
 }
