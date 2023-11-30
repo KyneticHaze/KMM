@@ -18,7 +18,7 @@ internal fun Result.toMovie(): Movie {
 private fun getImageUrl(posterPath: String) = "https://www.themoviedb.org/t/p/w500/${posterPath}"
 
 
-internal fun MovieDTO.movieWithPage(): Movies {
+internal fun MovieDTO.toMovies(): Movies {
     return Movies(
         page = page,
         movies = results.map { it.toMovie() }
