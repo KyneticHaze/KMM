@@ -3,15 +3,21 @@ package com.example.movie_kmm.android.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -24,7 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movie_kmm.android.components.MovieCard
@@ -58,19 +64,19 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             itemsIndexed(
-                uiState.moviePageList.movies,
-                key = { _, movie -> movie.id }) { movieIndex, movie ->
+                uiState.movies,
+                key = { _, movie -> movie.id }) { index, movie ->
                 MovieCard(movie = movie) {
                     navigateToDetail(movie)
                 }
 
-                if (movieIndex >= uiState.moviePageList.movies.size - 1 && !uiState.isLoading && !uiState.loadFinished) {
+                if (index >= uiState.movies.size - 1 && !uiState.isLoading && !uiState.loadFinished) {
                     LaunchedEffect(key1 = Unit, block = {
                         loadNextMovies(false)
                     })
                 }
             }
-            if (uiState.isLoading && uiState.moviePageList.movies.isNotEmpty()) {
+            if (uiState.isLoading && uiState.movies.isNotEmpty()) {
                 item(span = { GridItemSpan(2) }) {
                     Row(
                         modifier = Modifier
@@ -90,13 +96,27 @@ fun HomeScreen(
             )
         )
 
-        if (uiState.moviePageList.movies.isEmpty()) {
-            Text(
-                text = uiState.errorMessage,
-                style = MaterialTheme.typography.h4,
-                color = MaterialTheme.colors.error,
-                modifier = Modifier.align(Alignment.Center)
-            )
+        if (uiState.movies.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = uiState.errorMessage,
+                    style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.error
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                Button(onClick = { loadNextMovies(true) }, shape = RoundedCornerShape(10.dp)) {
+                    Text(
+                        text = "Refresh Data",
+                        modifier = Modifier.padding(5.dp),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
         }
     }
 }
